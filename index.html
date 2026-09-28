@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Rayee | Digital Creator & Developer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Space Grotesk', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #6c5ce7; border-radius: 10px; }
+
+  /* Loader */
+  .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0a; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.8s, visibility 0.8s; }
+  .loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-text { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: #fff; }
+  .loader-bar { width: 200px; height: 3px; background: #222; margin-top: 30px; border-radius: 10px; overflow: hidden; }
+  .loader-bar-fill { height: 100%; background: linear-gradient(90deg, #6c5ce7, #a29bfe); width: 0%; animation: loadBar 2s ease forwards; }
+  @keyframes loadBar { to { width: 100%; } }
+
+  /* Nav */
+  nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #6c5ce7, #a29bfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta { padding: 12px 30px; background: #6c5ce7; color: #fff; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; font-size: 0.9rem; }
+  .nav-cta:hover { background: #fff; color: #0a0a0a; transform: scale(1.05); }
+  .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: #fff; }
+
+  /* Hero */
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 120px 50px 80px; text-align: center; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(108,92,231,0.15) 0%, transparent 70%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(108,92,231,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(108,92,231,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+  .hero-profile-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid #6c5ce7; box-shadow: 0 0 30px rgba(108,92,231,0.5); margin-bottom: 30px; animation: floatImg 4s ease-in-out infinite; }
+  @keyframes floatImg { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  .hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 8px 20px; background: rgba(108,92,231,0.1); border: 1px solid rgba(108,92,231,0.3); border-radius: 50px; font-size: 0.85rem; color: #a29bfe; margin-bottom: 30px; }
+  .hero-badge .dot { width: 8px; height: 8px; background: #00b894; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
+  .gradient-text { background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-subtitle { font-size: 1.2rem; color: #888; margin-bottom: 40px; }
+  .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { padding: 16px 40px; background: #6c5ce7; color: #fff; border: none; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+  .btn-primary:hover { background: #fff; color: #0a0a0a; transform: translateY(-3px); box-shadow: 0 20px 40px rgba(108,92,231,0.3); }
+  .btn-secondary { padding: 16px 40px; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+  .btn-secondary:hover { border-color: #6c5ce7; background: rgba(108,92,231,0.1); }
+
+  /* Marquee */
+  .marquee-section { padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
+  .marquee-track { display: flex; animation: marquee 20s linear infinite; width: max-content; }
+  .marquee-item { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: rgba(255,255,255,0.1); white-space: nowrap; padding: 0 40px; }
+  .marquee-item span { color: #6c5ce7; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Sections Common */
+  section { padding: 120px 50px; position: relative; }
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #6c5ce7; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: #6c5ce7; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 60px; max-width: 800px; }
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* Services */
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+  .service-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; transition: all 0.5s; }
+  .service-card:hover { transform: translateY(-10px); border-color: rgba(108,92,231,0.3); background: rgba(108,92,231,0.05); }
+  .service-number { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; color: rgba(108,92,231,0.1); margin-bottom: 20px; }
+  .service-icon { font-size: 2.5rem; margin-bottom: 20px; }
+  .service-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; }
+  .service-card p { color: #888; line-height: 1.7; margin-bottom: 25px; }
+  .learn-more-btn { background: transparent; border: 1px solid #6c5ce7; color: #6c5ce7; padding: 10px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+  .learn-more-btn:hover { background: #6c5ce7; color: #fff; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+  .modal-content { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: slideUp 0.4s ease; }
+  .modal-close { position: absolute; top: 20px; right: 25px; font-size: 2rem; color: #fff; cursor: pointer; background: rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 10; }
+  .modal-close:hover { background: #6c5ce7; transform: rotate(90deg); }
+  .modal-img { width: 100%; height: 280px; object-fit: cover; border-radius: 24px 24px 0 0; }
+  .modal-body { padding: 40px; }
+  .modal-body h2 { font-family: 'Syne', sans-serif; font-size: 2.2rem; margin-bottom: 15px; }
+  .modal-body p { color: #aaa; line-height: 1.8; margin-bottom: 25px; font-size: 1.05rem; }
+  .modal-features { list-style: none; margin-bottom: 30px; }
+  .modal-features li { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ddd; display: flex; align-items: center; gap: 15px; font-size: 1rem; }
+  .modal-features li::before { content: '✓'; color: #6c5ce7; font-size: 1.2rem; font-weight: bold; }
+  .apply-btn { display: block; width: 100%; padding: 18px; background: #6c5ce7; color: #fff; text-align: center; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+  .apply-btn:hover { background: #fff; color: #0a0a0a; transform: translateY(-2px); }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* My Work / Showcase */
+  .showcase-item { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1400px; margin: 0 auto 120px; }
+  .showcase-item:last-child { margin-bottom: 0; }
+  .showcase-item.reverse { direction: rtl; }
+  .showcase-item.reverse > * { direction: ltr; }
+  .showcase-visual { position: relative; aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; background: #1a1a2e; }
+  .showcase-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+  .showcase-visual:hover img { transform: scale(1.1); }
+  .showcase-content h3 { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
+  .showcase-content p { color: #888; font-size: 1.1rem; line-height: 1.8; margin-bottom: 30px; }
+  .showcase-features { list-style: none; margin-bottom: 30px; }
+  .showcase-features li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; display: flex; align-items: center; gap: 15px; }
+  .showcase-features li::before { content: '→'; color: #6c5ce7; font-weight: bold; }
+
+  /* About Section */
+  .about { background: #050505; }
+  .about-container { max-width: 1100px; margin: 0 auto; }
+  .about-intro { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; align-items: center; margin-bottom: 60px; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+  .about-photo { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; box-shadow: 0 15px 40px rgba(108,92,231,0.3); border: 3px solid #6c5ce7; }
+  .about-intro-text h3 { font-size: 1.8rem; color: #fff; margin-bottom: 20px; font-family: 'Syne'; }
+  .about-intro-text p { color: #aaa; margin-bottom: 15px; font-size: 1.05rem; line-height: 1.8; }
+  .signature { font-family: 'Brush Script MT', cursive; font-size: 2rem; color: #6c5ce7; margin-top: 20px; }
+  .about-story { background: rgba(255,255,255,0.02); padding: 50px; border-radius: 20px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.05); }
+  .about-story h3 { font-size: 1.8rem; color: #6c5ce7; margin-bottom: 25px; font-family: 'Syne'; }
+  .about-story p { color: #aaa; margin-bottom: 20px; font-size: 1.05rem; line-height: 1.9; }
+  .mission-vision { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+  .mv-card { background: rgba(255,255,255,0.02); padding: 40px; border-radius: 20px; border-top: 4px solid #6c5ce7; border: 1px solid rgba(255,255,255,0.05); }
+  .mv-card h3 { font-size: 1.5rem; color: #6c5ce7; margin-bottom: 15px; font-family: 'Syne'; }
+  .mv-card p { color: #aaa; line-height: 1.8; }
+  .stats-section { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); padding: 60px; border-radius: 20px; margin-bottom: 40px; color: white; text-align: center; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; }
+  .stat-item h2 { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; margin-bottom: 10px; }
+  .stat-item p { font-size: 1.1rem; opacity: 0.9; }
+  .timeline-section { background: rgba(255,255,255,0.02); padding: 50px; border-radius: 20px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.05); }
+  .timeline-section h3 { font-size: 1.8rem; color: #6c5ce7; margin-bottom: 30px; text-align: center; font-family: 'Syne'; }
+  .timeline { position: relative; padding-left: 30px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: #6c5ce7; }
+  .timeline-item { position: relative; margin-bottom: 30px; padding-left: 30px; }
+  .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 18px; height: 18px; border-radius: 50%; background: #6c5ce7; border: 4px solid #0a0a0a; }
+  .timeline-item .year { display: inline-block; background: #6c5ce7; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; }
+  .timeline-item h4 { color: #fff; margin-bottom: 8px; font-size: 1.2rem; }
+  .timeline-item p { color: #888; line-height: 1.7; }
+  .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
+  .process-step { text-align: center; padding: 30px 20px; background: rgba(255,255,255,0.02); border-radius: 15px; transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+  .process-step:hover { transform: translateY(-10px); background: #6c5ce7; }
+  .process-step:hover h4, .process-step:hover p { color: white; }
+  .step-number { width: 50px; height: 50px; background: #6c5ce7; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 15px; }
+  .process-step:hover .step-number { background: white; color: #6c5ce7; }
+  .process-step h4 { color: #fff; margin-bottom: 10px; font-family: 'Syne'; }
+  .process-step p { color: #888; font-size: 0.95rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+  .testimonial-card { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 15px; border-left: 4px solid #6c5ce7; border: 1px solid rgba(255,255,255,0.05); }
+  .testimonial-text { color: #aaa; font-style: italic; margin-bottom: 20px; line-height: 1.7; }
+  .testimonial-author { display: flex; align-items: center; gap: 15px; }
+  .author-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #6c5ce7, #a29bfe); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; }
+  .author-info h5 { color: #fff; margin-bottom: 3px; }
+  .author-info p { color: #666; font-size: 0.9rem; }
+  .stars { color: #fdcb6e; margin-bottom: 10px; }
+  .skills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 25px; }
+  .skill-tag { background: #6c5ce7; color: white; padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; }
+
+  /* Contact */
+  .contact { background: #050505; text-align: center; }
+  .contact-container { max-width: 800px; margin: 0 auto; }
+  .contact-form { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 50px; text-align: left; margin-top: 40px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-group { margin-bottom: 25px; }
+  .form-group label { display: block; margin-bottom: 10px; font-size: 0.9rem; color: #888; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1rem; font-family: inherit; transition: all 0.3s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #6c5ce7; }
+  .form-group textarea { resize: vertical; min-height: 150px; }
+  .submit-btn { width: 100%; padding: 18px; background: #6c5ce7; color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+  .submit-btn:hover { background: #fff; color: #0a0a0a; }
+
+  /* Footer */
+  footer { background: #0a0a0a; padding: 40px 50px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: #444; }
+
+  @media (max-width: 968px) {
+    nav { padding: 20px 25px; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #0a0a0a; flex-direction: column; padding: 30px; }
+    .nav-links.active { display: flex; }
+    .nav-cta { display: none; }
+    .menu-toggle { display: block; }
+    section { padding: 80px 25px; }
+    .hero { padding: 120px 25px 80px; }
+    .showcase-item { grid-template-columns: 1fr; gap: 40px; }
+    .showcase-item.reverse { direction: ltr; }
+    .about-intro { grid-template-columns: 1fr; padding: 30px; }
+    .mission-vision { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .contact-form { padding: 30px 20px; }
+    .modal-body { padding: 25px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-text">Muhammad Rayee</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">MR.</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">My Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+  <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <img src="profile.jpg" alt="Muhammad Rayee" class="hero-profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'">
+    <div class="hero-badge"><span class="dot"></span> Available for Freelance Work</div>
+    <h1 class="hero-title">I Build <span class="gradient-text">Digital</span><br>Experiences</h1>
+    <p class="hero-subtitle">Web Developer • Video Editor • Digital Creator<br>Crafting stunning websites and cinematic videos that drive results.</p>
+    <div class="hero-buttons">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#contact" class="btn-secondary">Contact Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">WEB DEVELOPMENT <span></span> VIDEO EDITING <span>✦</span> GRAPHIC DESIGN <span>✦</span> SOCIAL MEDIA <span></span></div>
+    <div class="marquee-item">WEB DEVELOPMENT <span>✦</span> VIDEO EDITING <span>✦</span> GRAPHIC DESIGN <span>✦</span> SOCIAL MEDIA <span>✦</span></div>
+  </div>
+</div>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title reveal">Services That <span class="gradient-text">Transform</span> Your Brand</h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-number">01</div>
+      <div class="service-icon">💻</div>
+      <h3>Web Development</h3>
+      <p>Custom responsive websites built with modern technologies. From landing pages to full e-commerce stores.</p>
+      <button class="learn-more-btn" onclick="openModal('web')">Learn More</button>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">02</div>
+      <div class="service-icon">🎬</div>
+      <h3>Video Editing</h3>
+      <p>Professional video editing for YouTube, social media, and commercials. Cinematic quality guaranteed.</p>
+      <button class="learn-more-btn" onclick="openModal('video')">Learn More</button>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">03</div>
+      <div class="service-icon">🎨</div>
+      <h3>Graphic Design</h3>
+      <p>Eye-catching logos, banners, and branding materials that make your brand stand out from the crowd.</p>
+      <button class="learn-more-btn" onclick="openModal('graphic')">Learn More</button>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-number">04</div>
+      <div class="service-icon">📱</div>
+      <h3>Social Media</h3>
+      <p>Viral reels, engaging posts, and content strategy to grow your online presence exponentially.</p>
+      <button class="learn-more-btn" onclick="openModal('social')">Learn More</button>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal-content">
+    <div class="modal-close" onclick="closeModal()">✕</div>
+    <img id="modalImg" class="modal-img" src="" alt="Service">
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+      <h3 style="margin-bottom: 15px; font-family: 'Syne';">What's Included:</h3>
+      <ul class="modal-features" id="modalFeatures"></ul>
+      <button class="apply-btn" onclick="applyNow()">🚀 Apply Now for This Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- My Work / Showcase -->
+<section id="work" style="background: #050505;">
+  <div class="section-label">Featured Work</div>
+  <h2 class="section-title reveal">Projects That <span class="gradient-text">Speak</span></h2>
+  
+  <div class="showcase-item">
+    <div class="showcase-visual reveal"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" alt="Web Dev"><div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,92,231,0.2),transparent);"></div></div>
+    <div class="showcase-content reveal">
+      <h3>E-Commerce Platform</h3>
+      <p>A full-featured online store with modern design, payment integration, and seamless user experience.</p>
+      <ul class="showcase-features">
+        <li>Responsive Design</li><li>Payment Gateway</li><li>Admin Dashboard</li><li>SEO Optimized</li>
+      </ul>
+      <a href="#contact" class="btn-primary">Start Similar Project →</a>
+    </div>
+  </div>
+
+  <div class="showcase-item reverse">
+    <div class="showcase-visual reveal"><img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800" alt="Video"><div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,92,231,0.2),transparent);"></div></div>
+    <div class="showcase-content reveal">
+      <h3>Cinematic Video Edit</h3>
+      <p>Professional YouTube vlog editing with cinematic transitions, color grading, and motion graphics.</p>
+      <ul class="showcase-features">
+        <li>Color Grading</li><li>Motion Graphics</li><li>Sound Design</li><li>4K Output</li>
+      </ul>
+      <a href="#contact" class="btn-primary">Get Video Edited →</a>
+    </div>
+  </div>
+
+  <div class="showcase-item">
+    <div class="showcase-visual reveal"><img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800" alt="Design"><div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,92,231,0.2),transparent);"></div></div>
+    <div class="showcase-content reveal">
+      <h3>Brand Identity</h3>
+      <p>Complete brand identity design including logo, color palette, typography, and brand guidelines.</p>
+      <ul class="showcase-features">
+        <li>Logo Design</li><li>Brand Guidelines</li><li>Social Media Kit</li><li>All File Formats</li>
+      </ul>
+      <a href="#contact" class="btn-primary">Build Your Brand →</a>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="about" id="about">
+  <div class="about-container">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title reveal">Get to Know the <span class="gradient-text">Creator</span></h2>
+
+    <div class="about-intro reveal">
+      <img src="profile.jpg" alt="Muhammad Rayee" class="about-photo" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'">
+      <div class="about-intro-text">
+        <h3>Hello! I'm Muhammad Rayee</h3>
+        <p>A passionate and dedicated freelance professional specializing in web development, video editing, and digital content creation. With a keen eye for design and a strong technical foundation, I help businesses and creators bring their visions to life.</p>
+        <p>My journey in the digital world began with curiosity and has evolved into a full-fledged career built on creativity, consistency, and client satisfaction. I believe every project is an opportunity to create something meaningful.</p>
+        <div class="signature">— Muhammad Rayee</div>
+      </div>
+    </div>
+
+    <div class="about-story reveal">
+      <h3>📖 My Story & Journey</h3>
+      <p>My passion for technology and creativity started at a young age. What began as tinkering with computers and watching video tutorials soon transformed into a deep commitment to mastering the digital craft. I spent countless hours learning HTML, CSS, JavaScript, and video editing software — not just to build a career, but to solve real problems for real people.</p>
+      <p>Over the years, I've had the privilege of working with diverse clients — from small local businesses looking for their first website, to content creators needing professional video edits, to startups requiring complete brand identities. Each project has taught me something new and strengthened my belief that great design and technology can truly transform a business.</p>
+      <p>Today, I continue to grow, learn, and evolve. I stay updated with the latest industry trends, tools, and best practices so I can offer my clients nothing but the highest quality work. My goal is simple: to be the trusted digital partner that businesses and creators rely on to succeed online.</p>
+    </div>
+
+    <div class="mission-vision">
+      <div class="mv-card reveal">
+        <h3>🎯 My Mission</h3>
+        <p>To deliver exceptional digital solutions that empower businesses and creators to achieve their goals. I aim to provide affordable, high-quality web development, video editing, and design services with a personal touch.</p>
+      </div>
+      <div class="mv-card reveal">
+        <h3>🌟 My Vision</h3>
+        <p>To become a leading freelance digital professional known for creativity, reliability, and innovation. I envision building long-term relationships with clients worldwide and helping them grow their brands.</p>
+      </div>
+    </div>
+
+    <div class="stats-section reveal">
+      <div class="stats-grid">
+        <div class="stat-item"><h2>50+</h2><p>Projects Completed</p></div>
+        <div class="stat-item"><h2>30+</h2><p>Happy Clients</p></div>
+        <div class="stat-item"><h2>3+</h2><p>Years Experience</p></div>
+        <div class="stat-item"><h2>100%</h2><p>Client Satisfaction</p></div>
+      </div>
+    </div>
+
+    <div class="timeline-section reveal">
+      <h3>🚀 My Journey Timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="year">2025</span>
+          <h4>Professional Freelancer</h4>
+          <p>Built a strong portfolio with 50+ completed projects. Working with international clients and delivering premium quality work consistently.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="year">2026</span>
+          <h4>Scaling New Heights</h4>
+          <p>Continuing to grow, learn, and serve. Focused on building long-term partnerships and delivering even more innovative digital solutions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-section reveal" style="background: transparent; border: none; padding: 0;">
+      <h3>⚙️ My Work Process</h3>
+      <div class="process-grid">
+        <div class="process-step"><div class="step-number">1</div><h4>Discovery</h4><p>Understanding your goals and vision.</p></div>
+        <div class="process-step"><div class="step-number">2</div><h4>Planning</h4><p>Creating a clear roadmap and strategy.</p></div>
+        <div class="process-step"><div class="step-number">3</div><h4>Creation</h4><p>Building and designing with precision.</p></div>
+        <div class="process-step"><div class="step-number">4</div><h4>Delivery</h4><p>Final review and polished product.</p></div>
+      </div>
+    </div>
+
+    <div class="timeline-section reveal">
+      <h3>💬 What Clients Say</h3>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Muhammad delivered an outstanding website for my business. Professional, fast, and incredibly talented!"</p>
+          <div class="testimonial-author"><div class="author-avatar">AK</div><div class="author-info"><h5>Ahmed Khan</h5><p>Business Owner</p></div></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The video editing quality was beyond my expectations. My YouTube channel grew significantly!"</p>
+          <div class="testimonial-author"><div class="author-avatar">SF</div><div class="author-info"><h5>Sara Fatima</h5><p>Content Creator</p></div></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Excellent graphic design work! The logo perfectly captured our company's vision. Will work again!"</p>
+          <div class="testimonial-author"><div class="author-avatar">UR</div><div class="author-info"><h5>Usman Raza</h5><p>Startup Founder</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-section reveal" style="text-align: center;">
+      <h3>🛠️ My Skills & Tools</h3>
+      <div class="skills">
+        <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">WordPress</span><span class="skill-tag">Premiere Pro</span><span class="skill-tag">After Effects</span>
+        <span class="skill-tag">DaVinci Resolve</span><span class="skill-tag">Photoshop</span><span class="skill-tag">Illustrator</span>
+        <span class="skill-tag">Figma</span><span class="skill-tag">CapCut</span><span class="skill-tag">SEO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="contact-container">
+    <div class="section-label" style="justify-content: center;">Get In Touch</div>
+    <h2 class="section-title reveal" style="margin: 0 auto 20px;">Let's Build Something <span class="gradient-text">Amazing</span></h2>
+    <p class="hero-subtitle">Have a project in mind? Fill out the form below.</p>
+    
+    <form class="contact-form reveal" onsubmit="sendDirectEmail(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" id="clientName" required placeholder="John Doe"></div>
+        <div class="form-group"><label>Your Email</label><input type="email" id="clientEmail" required placeholder="john@example.com"></div>
+      </div>
+      <div class="form-group">
+        <label>Service Needed</label>
+        <select id="serviceSelect" required>
+          <option value="">Select a service</option>
+          <option value="Website Development">Website Development</option>
+          <option value="Video Editing">Video Editing</option>
+          <option value="Graphic Design">Graphic Design</option>
+          <option value="Social Media">Social Media Content</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Project Details</label><textarea id="projectDetails" required placeholder="Tell me about your project..."></textarea></div>
+      <button type="submit" class="submit-btn">Send Message & Apply </button>
+    </form>
+  </div>
+</section>
+
+<footer><p>&copy; 2026 Muhammad Rayee. All rights reserved.</p></footer>
+
+<script>
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000));
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('navLinks').classList.remove('active');
+  });
+});
+const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const serviceData = {
+  web: { img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800', title: 'Web Development', desc: 'I build modern, responsive, and fast websites that help your business grow online.', features: ['Custom responsive design', 'HTML, CSS, JS & WordPress', 'E-commerce & Payment Gateway', 'SEO optimization', 'Fast loading & Security', '3 months free maintenance'] },
+  video: { img: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800', title: 'Video Editing', desc: 'Professional video editing for YouTube, social media, and commercials.', features: ['YouTube vlogs & tutorials', 'Instagram Reels & TikToks', 'Cinematic color grading', 'Sound design & music', 'Animated intros/outros', 'Custom thumbnails'] },
+  graphic: { img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800', title: 'Graphic Design', desc: 'Eye-catching designs that make your brand stand out.', features: ['Logo & Brand identity', 'Social media posts', 'Banners & flyers', 'Photo editing', 'Unlimited revisions', 'Source files included'] },
+  social: { img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800', title: 'Social Media Content', desc: 'Grow your online presence with engaging content.', features: ['Viral Reels & Shorts', 'Content strategy', 'Trending audio & effects', 'Captions & hashtags', 'Profile optimization', 'Monthly packages'] }
+};
+
+let currentService = '';
+function openModal(type) {
+  const data = serviceData[type]; currentService = data.title;
+  document.getElementById('modalImg').src = data.img;
+  document.getElementById('modalTitle').textContent = data.title;
+  document.getElementById('modalDesc').textContent = data.desc;
+  const list = document.getElementById('modalFeatures'); list.innerHTML = '';
+  data.features.forEach(f => { const li = document.createElement('li'); li.textContent = f; list.appendChild(li); });
+  document.getElementById('serviceModal').classList.add('active'); document.body.style.overflow = 'hidden';
+}
+function closeModal() { document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'; }
+function applyNow() {
+  closeModal();
+  setTimeout(() => {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    const select = document.getElementById('serviceSelect');
+    for(let i=0; i<select.options.length; i++) { if(select.options[i].value.includes(currentService.split(' ')[0])) { select.selectedIndex = i; break; } }
+  }, 400);
+}
+
+function sendDirectEmail(e) {
+  e.preventDefault();
+  const name = document.getElementById('clientName').value;
+  const email = document.getElementById('clientEmail').value;
+  const service = document.getElementById('serviceSelect').value;
+  const details = document.getElementById('projectDetails').value;
+  const subject = `New Project Application: ${service}`;
+  const body = `Hi Muhammad Rayee,%0D%0A%0D%0AMy name is ${name} and my email is ${email}.%0D%0A%0D%0AI am interested in your *${service}* service.%0D%0A%0D%0AProject Details:%0D%0A${details}%0D%0A%0D%0APlease let me know the next steps.%0D%0A%0D%0AThank you!`;
+  window.location.href = `mailto:shiekhkhan490@gmail.com?subject=${subject}&body=${body}`;
+  alert('Aapka Email App khul gaya hai! Bas Send button daba dein. 🚀');
+}
+document.getElementById('serviceModal').addEventListener('click', (e) => { if(e.target === document.getElementById('serviceModal')) closeModal(); });
+</script>
+</body>
+</html>
