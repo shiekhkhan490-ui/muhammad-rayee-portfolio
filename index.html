@@ -609,7 +609,7 @@ fetch('https://formsubmit.co/ajax/shiekhkhan490@gmail.com', {
     btn.disabled = false;
   })
   .catch(error => {
-    alert('Kuch masla ho gaya. Dobara try karein.');
+    alert(error.message || 'Form submit nahi hua.');
     btn.textContent = originalText;
     btn.disabled = false;
   });
