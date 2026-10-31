@@ -422,7 +422,7 @@
     <h2 class="section-title slide-up" style="margin: 0 auto 20px; text-align: center;"><span class="text-reveal"><span>LET'S BUILD SOMETHING</span></span> <span class="highlight"><span class="text-reveal"><span>AMAZING</span></span></span></h2>
     <p class="hero-subtitle slide-up" style="text-align: center;">Have a project in mind? Fill out the form below.</p>
     
-    <form class="contact-form reveal" id="contactForm">
+    <form class="contact-form reveal" id="contactForm" action="https://formsubmit.co/shiekhkhan490@gmail.com" method="POST">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_subject" value="New Project Application!">
@@ -571,49 +571,6 @@ function applyNow() {
   }, 400);
 }
 
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const originalText = btn.textContent;
-  btn.textContent = 'SENDING... PLEASE WAIT';
-  btn.disabled = true;
-
-  const formData = new FormData(this);
-fetch('https://formsubmit.co/ajax/shiekhkhan490@gmail.com', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    body: JSON.stringify(
-        Object.fromEntries(formData.entries())
-    )
-})
-.then(response => response.json())
-.then(data => {
-    if (String(data.success) !== 'true') {
-        throw new Error(data.message || 'Form submit nahi hua.');
-    }
-
-    document.getElementById('successModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    this.reset();
-    btn.textContent = originalText;
-    btn.disabled = false;
-})
-    .then(data => {
-    document.getElementById('successModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    this.reset();
-    btn.textContent = originalText;
-    btn.disabled = false;
-  })
-  .catch(error => {
-    alert(error.message || 'Form submit nahi hua.');
-    btn.textContent = originalText;
-    btn.disabled = false;
-  });
-});
 
 function closeSuccessModal() {
   document.getElementById('successModal').classList.remove('active');
